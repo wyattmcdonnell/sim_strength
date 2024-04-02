@@ -22,3 +22,6 @@ The program will run `num_simulations` of size `group_size` and report observed 
 cargo run --release reference_data.csv group_data.csv 10 10000 false
 ```
 The above command will run `10000` of a group of `10` individuals, printing a progress bar, and then report results.
+
+### Interpretation
+Interpret at your own risk. Here be dragons! 🐉
