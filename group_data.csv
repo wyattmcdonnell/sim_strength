@@ -1,0 +1,35 @@
+trait_name,group,frequency
+Achiever,Executing,0.25
+Activator,Influencing,0.38
+Adaptability,Relationship Building,0.38
+Analytical,Strategic Thinking,0.25
+Arranger,Executing,0.63
+Belief,Executing,0.13
+Command,Influencing,0.5
+Communication,Influencing,0
+Competition,Influencing,0.25
+Connectedness,Relationship Building,0
+Consistency,Executing,0.25
+Context,Strategic Thinking,0
+Deliberative,Executing,0.13
+Developer,Relationship Building,0.25
+Discipline,Executing,0.25
+Empathy,Relationship Building,0.13
+Focus,Executing,0.13
+Futuristic,Strategic Thinking,0
+Harmony,Relationship Building,0.13
+Ideation,Strategic Thinking,0.38
+Includer,Relationship Building,0
+Individualization,Relationship Building,0.38
+Input,Strategic Thinking,0.25
+Intellection,Strategic Thinking,0.38
+Learner,Strategic Thinking,0.75
+Maximizer,Influencing,0.25
+Positivity,Relationship Building,0.38
+Relator,Relationship Building,0.75
+Responsibility,Executing,0.5
+Restorative,Executing,0.5
+Self-Assurance,Influencing,0.63
+Significance,Influencing,0.13
+Strategic,Strategic Thinking,0.75
+Woo,Influencing,0
