@@ -15,13 +15,13 @@
 
 ### Usage
 ```
-Usage: cargo run -- <reference_data.csv> <group_data.csv> <group_size> <num_simulations> <verbose>
+Usage: cargo run -- <reference_data.csv> <group_data.csv> <group_size> <num_simulations> <verbose> <mode>
 ```
 The program will run `num_simulations` of size `group_size` and report observed simulated frequencies for each of the 34 traits, and will report some simple statistical testing as well. Note that providing `true` for the `verbose` flag will print the results of each simulation to `stdout`. Consider the following sample command:
 ```
-cargo run --release reference_data.csv group_data.csv 10 10000 false
+cargo run --release reference_data.csv group_data.csv 10 10000 false top5
 ```
-The above command will run `10000` of a group of `10` individuals, printing a progress bar, and then report results.
+The above command will run `10000` simulations of a group of `10` individuals, choose 5 top traits/strengths for each observation in each simulation, print a progress bar, and then report results.
 
 ### Interpretation
 Interpret at your own risk. Here be dragons! 🐉

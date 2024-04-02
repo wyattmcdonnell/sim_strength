@@ -47,11 +47,17 @@ fn read_csv(file_path: &str) -> Vec<Trait> {
     traits
 }
 
-fn copula_sampling(conditional_prob_matrix: &[[f64; 34]; 34], reference_traits: &[Trait], rng: &mut impl Rng) -> Vec<String> {
+fn copula_sampling(conditional_prob_matrix: &[[f64; 34]; 34], reference_traits: &[Trait], rng: &mut impl Rng, mode: &str) -> Vec<String> {
     let mut observation_strengths = Vec::new();
     let mut remaining_traits: Vec<usize> = (0..34).collect();
 
-    while observation_strengths.len() < 10 && !remaining_traits.is_empty() {
+    let num_traits = match mode {
+        "top5" => 5,
+        "top10" => 10,
+        _ => panic!("Invalid mode: {}", mode),
+    };
+
+    while observation_strengths.len() < num_traits && !remaining_traits.is_empty() {
         let index = rng.gen_range(0..remaining_traits.len());
         let trait_index = remaining_traits.remove(index);
 
@@ -81,6 +87,7 @@ fn simulate_with_priors(
     group_size: usize,
     num_simulations: usize,
     verbose: bool,
+    mode: &str,
 ) -> (f64, HashMap<String, f64>) {
     let mut rng = rand::thread_rng();
     let mut exact_match_count = 0;
@@ -93,7 +100,7 @@ fn simulate_with_priors(
         let mut simulated_group_traits = vec![0.0; group_traits.len()];
 
         for _ in 0..group_size {
-            let observation_strengths = copula_sampling(conditional_prob_matrix, reference_traits, &mut rng);
+            let observation_strengths = copula_sampling(conditional_prob_matrix, reference_traits, &mut rng, mode);
 
             for (i, group_trait) in group_traits.iter().enumerate() {
                 if observation_strengths.contains(&group_trait.name) {
@@ -177,8 +184,8 @@ fn read_probability_matrix(file_path: &str) -> [[f64; 34]; 34] {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    if args.len() != 6 {
-        eprintln!("Usage: cargo run -- <reference_data.csv> <group_data.csv> <group_size> <num_simulations> <verbose>");
+    if args.len() != 7 {
+        eprintln!("Usage: cargo run -- <reference_data.csv> <group_data.csv> <group_size> <num_simulations> <verbose> <mode>");
         process::exit(1);
     }
 
@@ -187,6 +194,12 @@ fn main() {
     let group_size: usize = args[3].parse().expect("Invalid group size");
     let num_simulations: usize = args[4].parse().expect("Invalid number of simulations");
     let verbose: bool = args[5].parse().expect("Invalid verbose flag");
+    let mode = &args[6];
+
+    if mode != "top5" && mode != "top10" {
+        eprintln!("Invalid mode: {}. Mode should be either 'top5' or 'top10'.", mode);
+        process::exit(1);
+    }
 
     let reference_traits = read_csv(reference_data_file);
     let group_traits = read_csv(group_data_file);
@@ -204,7 +217,7 @@ fn main() {
     let probability_matrix = read_probability_matrix("probability_matrix.csv");
 
     let (exact_match_probability, trait_probabilities) = 
-        simulate_with_priors(&probability_matrix, &reference_traits, &group_traits, group_size, num_simulations, verbose);
+        simulate_with_priors(&probability_matrix, &reference_traits, &group_traits, group_size, num_simulations, verbose, mode);
     println!("Probability of observing exactly the group_data: {}", exact_match_probability);
     println!("\nTrait probabilities:");
 
